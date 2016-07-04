@@ -3,6 +3,11 @@
  *
  *  Author: dianoga7@3dgo.net
  *  Date: 2013-07-21
+ *  Updated by: clegault@nextgengeek.com
+ *  Updated date: 2016-07-03
+ *
+ *  Description: clegault - Updated with support for Ecobee Thermostat
+ *
  */
 
 // Automatically generated. Make future change here.
@@ -39,7 +44,7 @@ def updated() {
 
 	unsubscribe()
     unschedule()
-	initialize()
+    initialize()
 }
 
 def initialize() {
@@ -87,6 +92,14 @@ def turnOff() {
 
 def restore() {
     log.debug "Setting thermostat to $state.thermostatMode"
-    thermostat.setThermostatMode(state.thermostatMode)
+    if(state.thermostatMode == "auto") {
+    	thermostat.auto()
+    } else if (state.thermostatMode == "cool") {
+    	thermostat.cool()
+    } else if (state.thermostatMode == "heat") {
+    	thermostat.heat()
+    } else {
+    	thermostat.off()
+    }
     state.changed = false
 }
